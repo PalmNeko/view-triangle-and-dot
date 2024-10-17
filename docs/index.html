@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>triangle</title>
+</head>
+<body onload="main();">
+  <canvas id="pos" width="400" height="400"></canvas>
+  <script type="text/javascript">
+
+    const rate = 100;
+
+    function main() {
+      resizeCanvas();
+      drawShapes();
+    }
+
+    function resizeCanvas() {
+      let url = new URL(window.location.href);
+      let params = url.searchParams;
+      let posParam = params.get("pos");
+      let pos = posParam.split(",");
+      let max = Math.max(...pos);
+      let id1 = document.getElementById('pos');
+      id1.style.background = 'rgb(227, 227, 227)';
+      id1.width = max * rate + 100;
+      id1.height = max * rate + 100;
+    }
+
+    function drawShapes() {
+      
+      let url = new URL(window.location.href);
+      let params = url.searchParams;
+      let posParam = params.get("pos");
+      let pos = posParam.split(",");
+      for (let offset = 0; offset + 7 < pos.length; offset += 8) {
+        let x1 = parseFloat(pos[offset + 0]) * rate;
+        let y1 = parseFloat(pos[offset + 1]) * rate;
+        let x2 = parseFloat(pos[offset + 2]) * rate;
+        let y2 = parseFloat(pos[offset + 3]) * rate;
+        let x3 = parseFloat(pos[offset + 4]) * rate;
+        let y3 = parseFloat(pos[offset + 5]) * rate;
+        let pX = parseFloat(pos[offset + 6]) * rate;
+        let pY = parseFloat(pos[offset + 7]) * rate;
+        let info = {
+          'triangle': [x1, y1, x2, y2, x3, y3],
+          'point': [pX, pY]
+        };
+        console.log("%c ■", 'color: ' + usedColors[offset/8] + ';', info);
+        drawShape(...info.triangle,...info.point,usedColors[offset/8]);
+      }
+    }
+
+    function drawShape(x1,y1,x2,y2,x3,y3,pX,pY,color="black") {
+      // ドキュメントオブジェクト作成
+      var id1 = document.getElementById('pos');
+
+      // 2Dオブジェクト作成
+      var fig = id1.getContext('2d');
+
+      // 三角形描画
+      triangle(fig,x1,y1,x2,y2,x3,y3,"stroke", color,2);
+      dot(fig, pX, pY, color,2);
+    }
+
+    // 開始関数
+    function strDraw() {
+      // ドキュメントオブジェクト作成
+      var id1 = document.getElementById('pos');
+
+      // 2Dオブジェクト作成
+      var fig = id1.getContext('2d');
+
+      // 三角形描画
+      triangle(fig,100, 15,185,185, 15,185,"fill", "black");
+      triangle(fig,300, 15,385,185,215,185,"fill", "red");
+      triangle(fig,100,215,185,385, 15,385,"stroke","green",5);
+      triangle(fig,300,215,385,385,215,385,"stroke","blue" ,10);
+    }
+    
+    // 三角形表示関数
+    function triangle(fig,x1,y1,x2,y2,x3,y3,mode,color,thick) {
+      fig.beginPath();
+      fig.moveTo(x1,y1);
+      fig.lineTo(x2,y2);
+      fig.lineTo(x3,y3);
+      fig.closePath();
+
+      if (mode == "fill") {
+        fig.fillStyle = color;
+        fig.fill();
+      } else if (mode == "stroke") {
+        fig.lineWidth = thick;
+        fig.strokeStyle = color;
+        fig.stroke();
+      }
+    }
+
+    function dot(fig,x1,y1,color,thick) {
+      fig.beginPath();
+      fig.arc(x1, y1, thick / 2, 0, 2 * Math.PI)
+      fig.closePath();
+
+      fig.lineWidth = thick;
+      fig.strokeStyle = color;
+      fig.stroke();
+    }
+
+    /**
+     * data block
+     */
+    const usedColors = [
+      "#FF6347",  /* Tomato */
+      "#4682B4",  /* SteelBlue */
+      "#FF4500",  /* OrangeRed */
+      "#32CD32",  /* LimeGreen */
+      "#FFD700",  /* Gold */
+      "#8A2BE2",  /* BlueViolet */
+      "#FF69B4",  /* HotPink */
+      "#1E90FF",  /* DodgerBlue */
+      "#FF1493",  /* DeepPink */
+      "#20B2AA",  /* LightSeaGreen */
+      "#DC143C",  /* Crimson */
+      "#7FFF00",  /* Chartreuse */
+      "#6495ED",  /* CornflowerBlue */
+      "#00FA9A",  /* MediumSpringGreen */
+      "#FF7F50",  /* Coral */
+      "#6A5ACD",  /* SlateBlue */
+      "#FF8C00",  /* DarkOrange */
+      "#DA70D6",  /* Orchid */
+      "#40E0D0",  /* Turquoise */
+      "#FF00FF",  /* Magenta */
+      "#00CED1",  /* DarkTurquoise */
+      "#FFB6C1",  /* LightPink */
+      "#00FF7F",  /* SpringGreen */
+      "#BA55D3",  /* MediumOrchid */
+      "#F08080",  /* LightCoral */
+      "#7CFC00",  /* LawnGreen */
+      "#9932CC",  /* DarkOrchid */
+      "#FF6347",  /* Tomato */
+      "#B22222",  /* FireBrick */
+      "#5F9EA0",  /* CadetBlue */
+      "#EE82EE",  /* Violet */
+      "#ADFF2F",  /* GreenYellow */
+      "#00BFFF",  /* DeepSkyBlue */
+      "#FF1493",  /* DeepPink */
+      "#7B68EE",  /* MediumSlateBlue */
+      "#FFD700",  /* Gold */
+      "#FA8072",  /* Salmon */
+      "#F0E68C",  /* Khaki */
+      "#00FF00",  /* Lime */
+      "#0000FF",  /* Blue */
+      "#8B0000",  /* DarkRed */
+      "#00FFFF",  /* Aqua */
+      "#00FF00",  /* Lime */
+      "#4B0082",  /* Indigo */
+      "#FFA07A",  /* LightSalmon */
+      "#90EE90",  /* LightGreen */
+      "#800000",  /* Maroon */
+      "#D2691E",  /* Chocolate */
+      "#B0E0E6",  /* PowderBlue */
+      "#00008B",  /* DarkBlue */
+      "#BDB76B",  /* DarkKhaki */
+      "#2E8B57",  /* SeaGreen */
+      "#FFDAB9",  /* PeachPuff */
+      "#CD5C5C",  /* IndianRed */
+      "#A9A9A9",  /* DarkGray */
+      "#A52A2A",  /* Brown */
+      "#808080",  /* Gray */
+      "#F5DEB3",  /* Wheat */
+      "#DDA0DD",  /* Plum */
+      "#800080",  /* Purple */
+      "#00CED1",  /* DarkTurquoise */
+      "#FFA500",  /* Orange */
+      "#1E90FF",  /* DodgerBlue */
+      "#FFFACD",  /* LemonChiffon */
+      "#7FFFD4",  /* Aquamarine */
+      "#DC143C",  /* Crimson */
+      "#66CDAA",  /* MediumAquamarine */
+      "#B8860B",  /* DarkGoldenRod */
+      "#00FA9A",  /* MediumSpringGreen */
+      "#8FBC8F",  /* DarkSeaGreen */
+      "#F5F5DC",  /* Beige */
+      "#6495ED",  /* CornflowerBlue */
+      "#FFF0F5",  /* LavenderBlush */
+      "#2F4F4F",  /* DarkSlateGray */
+      "#D2B48C",  /* Tan */
+      "#FF00FF",  /* Fuchsia */
+      "#191970",  /* MidnightBlue */
+      "#BC8F8F",  /* RosyBrown */
+      "#F0FFF0",  /* HoneyDew */
+      "#4682B4",  /* SteelBlue */
+      "#D3D3D3",  /* LightGrey */
+      "#3CB371",  /* MediumSeaGreen */
+      "#696969",  /* DimGray */
+      "#FF4500",  /* OrangeRed */
+      "#DAA520",  /* GoldenRod */
+      "#DB7093",  /* PaleVioletRed */
+      "#FFF5EE",  /* SeaShell */
+      "#FFDEAD",  /* NavajoWhite */
+      "#87CEFA",  /* LightSkyBlue */
+      "#F4A460",  /* SandyBrown */
+      "#7CFC00",  /* LawnGreen */
+      "#4169E1",  /* RoyalBlue */
+      "#E9967A",  /* DarkSalmon */
+      "#708090",  /* SlateGray */
+      "#F0F8FF",  /* AliceBlue */
+      "#FAFAD2",  /* LightGoldenRodYellow */
+      "#FF6347",  /* Tomato */
+      "#48D1CC",  /* MediumTurquoise */
+      "#E6E6FA",  /* Lavender */
+      "#00FF7F"  /* SpringGreen */
+    ];
+  </script>
+</body>
+</html>
